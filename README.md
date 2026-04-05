@@ -1,4 +1,4 @@
-# qbx_trunkhide
+# Torque_hideintrunk
 
 A FiveM resource for **QBX/Qbox** that lets players hide inside vehicle trunks. Built with `ox_lib` and `ox_target`.
 
@@ -31,12 +31,12 @@ A FiveM resource for **QBX/Qbox** that lets players hide inside vehicle trunks. 
 
 1. Download or clone this resource into your `resources` folder:
    ```
-   resources/[qbx]/qbx_trunkhide/
+   resources/[qbx]/Torque_hideintrunk/
    ```
 
 2. Make sure the folder structure matches:
    ```
-   qbx_trunkhide/
+   Torque_hideintrunk/
    ├── client/
    │   └── main.lua
    ├── server/
@@ -48,7 +48,7 @@ A FiveM resource for **QBX/Qbox** that lets players hide inside vehicle trunks. 
 
 3. Add to your `server.cfg`:
    ```
-   ensure qbx_trunkhide
+   ensure Torque_hideintrunk
    ```
 
 4. Restart your server.
@@ -111,7 +111,7 @@ Config.TargetIconClose  = 'fa-solid fa-car'
 
 ### Entering the trunk
 1. Player targets a vehicle near the `boot` bone via `ox_target`.
-2. A server callback (`qbx_trunkhide:server:tryEnter`) checks that no one else is already occupying that vehicle's trunk.
+2. A server callback checks that no one else is already occupying that vehicle's trunk.
 3. If clear, the ped is attached to the vehicle with `AttachEntityToEntity`, collision is disabled, and the hiding animation loops.
 4. If `AutoOpenClose` is enabled the trunk lid opens briefly then closes.
 
@@ -123,29 +123,6 @@ Pressing **E** (control `38`) triggers `leaveTrunk()`:
 1. Server callback releases the occupancy lock.
 2. Trunk opens (if `AutoOpenClose`), ped is detached and placed ~2 m behind the vehicle, then the trunk closes.
 3. If the vehicle no longer exists, the ped is safely detached in place.
-
-### Server state
-`trunkOccupants` is a simple `[vehNetId] = source` table. It is cleaned up on:
-- Player disconnect (`playerDropped`)
-- `leave` callback
-- External event `qbx_trunkhide:server:clearVehicle` (callable from other resources)
-
----
-
-## Events & Callbacks
-
-### Server Callbacks (ox_lib)
-
-| Name | Arguments | Returns | Description |
-|---|---|---|---|
-| `qbx_trunkhide:server:tryEnter` | `vehNetId` | `{ ok, reason? }` | Attempt to claim a trunk slot |
-| `qbx_trunkhide:server:leave` | `vehNetId` | `{ ok }` | Release a trunk slot |
-
-### Net Events
-
-| Name | Side | Arguments | Description |
-|---|---|---|---|
-| `qbx_trunkhide:server:clearVehicle` | Server | `vehNetId` | Force-clears occupancy for a vehicle (e.g. on impound) |
 
 ---
 
